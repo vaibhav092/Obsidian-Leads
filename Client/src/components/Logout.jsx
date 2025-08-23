@@ -10,7 +10,6 @@ function Logout() {
     const handleLogout = async () => {
         try {
             await logout();
-            navigate('/');
         } catch (err) {
             console.error('Logout failed:', err.response?.data || err.message);
         }

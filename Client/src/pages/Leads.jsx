@@ -1,9 +1,15 @@
 import Logout from '@/components/Logout';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 function Leads() {
+    const navigate = useNavigate();
     const { user } = useAuth();
+
+    const handleHomeClick = () => {
+        navigate('/');
+    };
 
     return (
         <div className="min-h-screen bg-neutral-900 text-white p-8">
@@ -15,7 +21,15 @@ function Leads() {
                             Welcome back, {user?.firstName || 'User'}!
                         </p>
                     </div>
-                    <Logout />
+                    <div className="flex items-center space-x-4">
+                        <button
+                            onClick={handleHomeClick}
+                            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors text-white font-medium"
+                        >
+                            Home
+                        </button>
+                        <Logout />
+                    </div>
                 </div>
 
                 <div className="bg-neutral-800 rounded-lg p-6">
