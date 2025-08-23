@@ -17,11 +17,7 @@ function Logout() {
     };
 
     return (
-        <Button 
-            variant="destructive" 
-            onClick={handleLogout} 
-            className="px-4 py-2"
-        >
+        <Button variant="destructive" onClick={handleLogout} className="px-4 py-2 hover:cursor-pointer">
             Logout
         </Button>
     );

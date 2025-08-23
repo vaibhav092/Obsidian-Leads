@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 
 function LoginForm() {
     const navigate = useNavigate();
-    
+
     const { login, register } = useAuth();
     const [isLogin, setIsLogin] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
