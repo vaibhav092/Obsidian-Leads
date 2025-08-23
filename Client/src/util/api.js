@@ -1,13 +1,13 @@
+// src/utils/axios.js
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
+// Create axios instance
 const api = axios.create({
     baseURL: API_BASE_URL,
     timeout: 10000,
-    headers: {
-        'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     withCredentials: true, 
 });
 
@@ -16,11 +16,8 @@ let failedQueue = [];
 
 const processQueue = (error, token = null) => {
     failedQueue.forEach((prom) => {
-        if (error) {
-            prom.reject(error);
-        } else {
-            prom.resolve(token);
-        }
+        if (error) prom.reject(error);
+        else prom.resolve(token);
     });
     failedQueue = [];
 };
@@ -30,11 +27,9 @@ api.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        // Handle Unauthorized (401)
         if (error.response?.status === 401 && !originalRequest._retry) {
             if (isRefreshing) {
-                // Queue request until refresh is done
-                return new Promise(function (resolve, reject) {
+                return new Promise((resolve, reject) => {
                     failedQueue.push({ resolve, reject });
                 })
                     .then(() => api(originalRequest))
@@ -45,13 +40,19 @@ api.interceptors.response.use(
             isRefreshing = true;
 
             try {
-                // Call refresh endpoint
                 await api.post('/api/users/refresh');
-                processQueue(null);
-                return api(originalRequest); // retry original
+
+                processQueue(null); // retry queued requests
+                return api(originalRequest);
             } catch (refreshError) {
                 processQueue(refreshError, null);
-                localStorage.removeItem('user'); // logout locally
+
+                try {
+                    await api.get('/api/users/logout');
+                } catch (e) {
+                    console.warn('Logout failed:', e);
+                }
+
                 return Promise.reject(refreshError);
             } finally {
                 isRefreshing = false;
@@ -94,6 +95,14 @@ export const userApi = {
     register: (userData) => apiPost('/api/users/register', userData),
     getProfile: () => apiGet('/api/users/me'),
     logout: () => apiGet('/api/users/logout'),
+    isLogin: async () => {
+        try {
+            await apiGet('/api/users/me');
+            return true;
+        } catch (error) {
+            return false;
+        }
+    },
 };
 
 // Lead API
