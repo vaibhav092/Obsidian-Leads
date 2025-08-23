@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-app.use(morgan());
+app.use(morgan('combined'));
 
 app.use('/api/users', userRoutes);
 app.use('/api/leads', leadRoutes);

@@ -4,16 +4,10 @@
     "type": "module",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node index.js",
         "dev": "nodemon index.js",
-        "format": "prettier . --write",
-        "format:check": "prettier . --check",
-        "db:generate": "prisma generate",
-        "db:push": "prisma db push",
-        "db:migrate": "prisma migrate dev",
-        "db:studio": "prisma studio",
-        "db:reset": "prisma migrate reset"
+        "prisma:generate": "prisma generate --no-engine",
+        "install:prod": "npm install --omit=dev"
     },
     "keywords": [],
     "author": "",
