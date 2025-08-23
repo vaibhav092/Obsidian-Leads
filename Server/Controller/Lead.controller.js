@@ -1,14 +1,13 @@
 import prisma from '../lib/prisma.js';
 
-
 const buildFilterConditions = (filters) => {
     const conditions = {};
 
     if (!filters) return conditions;
 
-    Object.keys(filters).forEach(key => {
+    Object.keys(filters).forEach((key) => {
         const filter = filters[key];
-        
+
         if (!filter || !filter.operator || filter.value === undefined) return;
 
         const { operator, value } = filter;
@@ -42,9 +41,9 @@ const buildFilterConditions = (filters) => {
                 } else if (operator === 'lt') {
                     conditions[key] = { lt: parseFloat(value) };
                 } else if (operator === 'between' && Array.isArray(value) && value.length === 2) {
-                    conditions[key] = { 
-                        gte: parseFloat(value[0]), 
-                        lte: parseFloat(value[1]) 
+                    conditions[key] = {
+                        gte: parseFloat(value[0]),
+                        lte: parseFloat(value[1]),
                     };
                 }
                 break;
@@ -54,18 +53,18 @@ const buildFilterConditions = (filters) => {
                     const date = new Date(value);
                     const nextDay = new Date(date);
                     nextDay.setDate(date.getDate() + 1);
-                    conditions.createdAt = { 
-                        gte: date, 
-                        lt: nextDay 
+                    conditions.createdAt = {
+                        gte: date,
+                        lt: nextDay,
                     };
                 } else if (operator === 'before') {
                     conditions.createdAt = { lt: new Date(value) };
                 } else if (operator === 'after') {
                     conditions.createdAt = { gt: new Date(value) };
                 } else if (operator === 'between' && Array.isArray(value) && value.length === 2) {
-                    conditions.createdAt = { 
-                        gte: new Date(value[0]), 
-                        lte: new Date(value[1]) 
+                    conditions.createdAt = {
+                        gte: new Date(value[0]),
+                        lte: new Date(value[1]),
                     };
                 }
                 break;
@@ -75,18 +74,18 @@ const buildFilterConditions = (filters) => {
                     const date = new Date(value);
                     const nextDay = new Date(date);
                     nextDay.setDate(date.getDate() + 1);
-                    conditions.lastActivityAt = { 
-                        gte: date, 
-                        lt: nextDay 
+                    conditions.lastActivityAt = {
+                        gte: date,
+                        lt: nextDay,
                     };
                 } else if (operator === 'before') {
                     conditions.lastActivityAt = { lt: new Date(value) };
                 } else if (operator === 'after') {
                     conditions.lastActivityAt = { gt: new Date(value) };
                 } else if (operator === 'between' && Array.isArray(value) && value.length === 2) {
-                    conditions.lastActivityAt = { 
-                        gte: new Date(value[0]), 
-                        lte: new Date(value[1]) 
+                    conditions.lastActivityAt = {
+                        gte: new Date(value[0]),
+                        lte: new Date(value[1]),
                     };
                 }
                 break;
@@ -109,7 +108,7 @@ export const getAllLeads = async (req, res) => {
         const skip = (page - 1) * limit;
 
         const filters = {};
-        Object.keys(req.query).forEach(key => {
+        Object.keys(req.query).forEach((key) => {
             if (key !== 'page' && key !== 'limit') {
                 try {
                     filters[key] = JSON.parse(req.query[key]);
@@ -120,7 +119,7 @@ export const getAllLeads = async (req, res) => {
         });
 
         const whereConditions = buildFilterConditions(filters);
-        
+
         // Add user filter to ensure users only see their own leads
         whereConditions.userId = req.user.userId;
 
@@ -155,9 +154,9 @@ export const getLeadById = async (req, res) => {
     try {
         const { id } = req.params;
         const lead = await prisma.lead.findFirst({
-            where: { 
+            where: {
                 id,
-                userId: req.user.userId 
+                userId: req.user.userId,
             },
         });
 
@@ -197,7 +196,14 @@ export const createLead = async (req, res) => {
         }
 
         // Validate enum values
-        const validSources = ['website', 'facebook_ads', 'google_ads', 'referral', 'events', 'other'];
+        const validSources = [
+            'website',
+            'facebook_ads',
+            'google_ads',
+            'referral',
+            'events',
+            'other',
+        ];
         const validStatuses = ['new', 'contacted', 'qualified', 'lost', 'won'];
 
         if (source && !validSources.includes(source)) {
@@ -215,9 +221,9 @@ export const createLead = async (req, res) => {
         }
 
         const existingLead = await prisma.lead.findFirst({
-            where: { 
+            where: {
                 email,
-                userId: req.user.userId
+                userId: req.user.userId,
             },
         });
 
@@ -243,14 +249,18 @@ export const createLead = async (req, res) => {
                 leadValue,
                 isQualified,
                 lastActivityAt: new Date(),
-                userId: req.user.userId, 
+                userId: req.user.userId,
             },
         });
 
         res.status(201).json({ success: true, lead });
     } catch (error) {
         console.error('Error creating lead:', error);
-        res.status(500).json({ error: error.message, success: false, message: 'Failed to create lead' });
+        res.status(500).json({
+            error: error.message,
+            success: false,
+            message: 'Failed to create lead',
+        });
     }
 };
 
@@ -260,7 +270,14 @@ export const updateLead = async (req, res) => {
         const updateData = req.body;
 
         // Validate enum values if they are being updated
-        const validSources = ['website', 'facebook_ads', 'google_ads', 'referral', 'events', 'other'];
+        const validSources = [
+            'website',
+            'facebook_ads',
+            'google_ads',
+            'referral',
+            'events',
+            'other',
+        ];
         const validStatuses = ['new', 'contacted', 'qualified', 'lost', 'won'];
 
         if (updateData.source && !validSources.includes(updateData.source)) {
@@ -280,9 +297,9 @@ export const updateLead = async (req, res) => {
         updateData.lastActivityAt = new Date();
 
         const existingLead = await prisma.lead.findFirst({
-            where: { 
+            where: {
                 id,
-                userId: req.user.userId
+                userId: req.user.userId,
             },
         });
 
@@ -298,18 +315,22 @@ export const updateLead = async (req, res) => {
         res.json({ success: true, lead });
     } catch (error) {
         console.error('Error updating lead:', error);
-        res.status(500).json({ error: error.message, success: false, message: 'Failed to update lead' });
+        res.status(500).json({
+            error: error.message,
+            success: false,
+            message: 'Failed to update lead',
+        });
     }
 };
 
 export const deleteLead = async (req, res) => {
     try {
         const { id } = req.params;
-        
+
         const existingLead = await prisma.lead.findFirst({
-            where: { 
+            where: {
                 id,
-                userId: req.user.userId
+                userId: req.user.userId,
             },
         });
 
@@ -327,4 +348,3 @@ export const deleteLead = async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to delete lead' });
     }
 };
-

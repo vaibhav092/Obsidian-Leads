@@ -15,15 +15,15 @@ A comprehensive REST API for managing leads with advanced filtering and paginati
 
 ### Lead Management
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/leads` | Create a new lead |
-| GET | `/leads` | Get all leads (with pagination & filtering) |
-| GET | `/leads/:id` | Get a single lead by ID |
-| PUT | `/leads/:id` | Update a lead |
-| DELETE | `/leads/:id` | Delete a lead |
-| PATCH | `/leads/:id/status` | Update lead status |
-| PATCH | `/leads/:id/score` | Update lead score |
+| Method | Endpoint            | Description                                 |
+| ------ | ------------------- | ------------------------------------------- |
+| POST   | `/leads`            | Create a new lead                           |
+| GET    | `/leads`            | Get all leads (with pagination & filtering) |
+| GET    | `/leads/:id`        | Get a single lead by ID                     |
+| PUT    | `/leads/:id`        | Update a lead                               |
+| DELETE | `/leads/:id`        | Delete a lead                               |
+| PATCH  | `/leads/:id/status` | Update lead status                          |
+| PATCH  | `/leads/:id/score`  | Update lead score                           |
 
 ## Pagination
 
@@ -33,14 +33,17 @@ The `GET /leads` endpoint supports pagination with the following query parameter
 - `limit` (optional): Items per page (default: 20, max: 100)
 
 **Response Format:**
+
 ```json
 {
-  "success": true,
-  "data": [/* leads array */],
-  "page": 2,
-  "limit": 20,
-  "total": 146,
-  "totalPages": 8
+    "success": true,
+    "data": [
+        /* leads array */
+    ],
+    "page": 2,
+    "limit": 20,
+    "total": 146,
+    "totalPages": 8
 }
 ```
 
@@ -49,6 +52,7 @@ The `GET /leads` endpoint supports pagination with the following query parameter
 The `GET /leads` endpoint supports advanced filtering with multiple operators. Filters are combined with AND logic.
 
 ### Filter Format
+
 ```javascript
 GET /leads?fieldName={"operator":"operatorType","value":"filterValue"}
 ```
@@ -56,10 +60,12 @@ GET /leads?fieldName={"operator":"operatorType","value":"filterValue"}
 ### Available Filters
 
 #### String Fields (email, company, city)
+
 - `equals`: Exact match
 - `contains`: Case-insensitive substring match
 
 **Examples:**
+
 ```javascript
 // Exact email match
 GET /leads?email={"operator":"equals","value":"john@example.com"}
@@ -69,10 +75,12 @@ GET /leads?company={"operator":"contains","value":"tech"}
 ```
 
 #### Enum Fields (status, source)
+
 - `equals`: Exact match
 - `in`: Match any value in array
 
 **Examples:**
+
 ```javascript
 // Status equals "qualified"
 GET /leads?status={"operator":"equals","value":"qualified"}
@@ -82,12 +90,14 @@ GET /leads?status={"operator":"in","value":["new","contacted"]}
 ```
 
 #### Number Fields (score, leadValue)
+
 - `equals`: Exact match
 - `gt`: Greater than
 - `lt`: Less than
 - `between`: Range match
 
 **Examples:**
+
 ```javascript
 // Score greater than 50
 GET /leads?score={"operator":"gt","value":50}
@@ -97,12 +107,14 @@ GET /leads?leadValue={"operator":"between","value":[1000,10000]}
 ```
 
 #### Date Fields (created_at, last_activity_at)
+
 - `on`: Exact date match
 - `before`: Before date
 - `after`: After date
 - `between`: Date range
 
 **Examples:**
+
 ```javascript
 // Created on specific date
 GET /leads?created_at={"operator":"on","value":"2024-01-15"}
@@ -112,14 +124,17 @@ GET /leads?last_activity_at={"operator":"between","value":["2024-01-01","2024-01
 ```
 
 #### Boolean Field (is_qualified)
+
 - `equals`: Exact boolean match
 
 **Example:**
+
 ```javascript
 GET /leads?is_qualified={"operator":"equals","value":true}
 ```
 
 ### Multiple Filters
+
 Combine multiple filters with AND logic:
 
 ```javascript
@@ -129,28 +144,31 @@ GET /leads?page=1&limit=10&status={"operator":"equals","value":"qualified"}&scor
 ## Setup
 
 1. **Install Dependencies**
-   ```bash
-   npm install
-   ```
+
+    ```bash
+    npm install
+    ```
 
 2. **Environment Variables**
    Create a `.env` file with:
-   ```
-   DATABASE_URL="postgresql://username:password@localhost:5432/leadms"
-   JWT_SECRET="your-secret-key"
-   PORT=3000
-   ```
+
+    ```
+    DATABASE_URL="postgresql://username:password@localhost:5432/leadms"
+    JWT_SECRET="your-secret-key"
+    PORT=3000
+    ```
 
 3. **Database Setup**
-   ```bash
-   npx prisma generate
-   npx prisma db push
-   ```
+
+    ```bash
+    npx prisma generate
+    npx prisma db push
+    ```
 
 4. **Start Server**
-   ```bash
-   npm start
-   ```
+    ```bash
+    npm start
+    ```
 
 ## Testing
 
@@ -164,6 +182,7 @@ node test_api.js
 ## Data Model
 
 ### Lead Fields
+
 - `id`: Unique identifier (CUID)
 - `firstName`: First name (required)
 - `lastName`: Last name (required)
@@ -187,12 +206,13 @@ The API returns consistent error responses:
 
 ```json
 {
-  "success": false,
-  "message": "Error description"
+    "success": false,
+    "message": "Error description"
 }
 ```
 
 Common HTTP status codes:
+
 - `200`: Success
 - `201`: Created
 - `400`: Bad Request

@@ -9,12 +9,26 @@ import leadRoutes from './Router/lead.routes.js';
 
 const app = express();
 
-dotenv.config(); 
+dotenv.config();
 
-app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
-    credentials: true,
-}));
+const allowedOrigins = [
+    'http://localhost:5173', // Development
+    'https://obsidian-leads.vercel.app', // Vercel preview
+    'https://your-actual-production-domain.com', // Your real production domain
+];
+
+app.use(
+    cors({
+        origin: function (origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
+        credentials: true,
+    })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('combined'));
@@ -22,7 +36,7 @@ app.use(morgan('combined'));
 app.use('/api/users', userRoutes);
 app.use('/api/leads', leadRoutes);
 
-const PORT =  3000;
+const PORT = 3000;
 
 async function startServer() {
     try {
