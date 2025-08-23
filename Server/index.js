@@ -9,6 +9,8 @@ import leadRoutes from './Router/lead.routes.js';
 
 const app = express();
 
+dotenv.config(); 
+
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
@@ -17,7 +19,7 @@ app.use(morgan('combined'));
 app.use('/api/users', userRoutes);
 app.use('/api/leads', leadRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT =  3000;
 
 async function startServer() {
     try {
