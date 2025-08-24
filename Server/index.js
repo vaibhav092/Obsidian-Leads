@@ -34,6 +34,18 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('tiny'));
 
+app.use('/api', (req, res, next) => {
+    res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate, private',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Surrogate-Control': 'no-store',
+        'Last-Modified': new Date().toUTCString(),
+        'ETag': `"${Date.now()}"`
+    });
+    next();
+});
+
 app.use('/api/users', userRoutes);
 app.use('/api/leads', leadRoutes);
 

@@ -6,7 +6,11 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000
 const api = axios.create({
     baseURL: API_BASE_URL,
     timeout: 10000,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+    },
     withCredentials: true,
 });
 
@@ -65,13 +69,18 @@ api.interceptors.response.use(
     }
 );
 
-export const apiGet = async (endpoint, config = {}) => {
-    const response = await api.get(endpoint, config);
+export const apiGet = async (endpoint, params = {}, config = {}) => {
+    // Add timestamp to prevent caching
+    const paramsWithTimestamp = {
+        ...params,
+        _t: Date.now()
+    };
+    const response = await api.get(endpoint, { params: paramsWithTimestamp, ...config });
     return response.data;
 };
 
-export const apiPost = async (endpoint, data = {}, config = {}) => {
-    const response = await api.post(endpoint, data, config);
+export const apiPost = async (endpoint, data = {}, params = {}, config = {}) => {
+    const response = await api.post(endpoint, data, { params, ...config });
     return response.data;
 };
 
