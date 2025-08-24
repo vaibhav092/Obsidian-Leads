@@ -309,3 +309,18 @@ export const logout = async (req, res) => {
         });
     }
 };
+
+export const isLogin = async (req, res) => {
+    const user = req?.user;
+
+    if (!user) {
+        return res.status(200).json({ isLoggedIn: false });
+    }
+
+    return res.status(200).json({
+        isLoggedIn: true,
+        user: {
+            id: user.userId,
+        },
+    });
+}
