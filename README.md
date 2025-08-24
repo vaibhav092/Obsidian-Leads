@@ -1,132 +1,67 @@
-# 🎯Obsidian Leads - Lead Management System
+# 🎯 LeadMS - Lead Management System
 
-A full-stack Leads CRM system built with React (Vite + Tailwind + AG Grid) on the frontend and Express.js + JWT Auth on the backend.
-It allows secure user authentication, lead management (CRUD), server-side pagination & filtering, and a sleek modern UI.
+A modern lead management app built with React, Node.js, and Prisma. Features dark UI, real-time data, and secure authentication.
 
-🚀 Features
+## ✨ Features
+- 🔐 JWT authentication with protected routes
+- 📊 CRUD operations for leads with advanced filtering
+- 🎨 Dark theme with AG Grid data tables
+- 🔒 Secure API with CORS protection
+- 📱 Responsive design for all devices
 
-🔐 Authentication
+## 🚀 Quick Start
 
-Register / Login / Logout with JWT (httpOnly cookies)
+### Backend Setup
+```bash
+cd Server
+npm install
+# Set up .env with DATABASE_URL and JWT_SECRET
+npx prisma generate && npx prisma migrate dev
+npm run dev
+```
 
-Bcrypt-hashed passwords
-
-Protected routes, 401 handling
-
-👥 Lead Management
-
-Create, Read, Update, Delete (CRUD) leads
-
-Unique email validation
-
-Enum-based status and source
-
-Score (0–100) & Lead Value
-
-Last Activity Date tracking
-
-📑 API Features
-
-Server-side pagination (page, limit)
-
-Filtering (string, enum, number, date, boolean)
-
-RESTful routes with proper HTTP codes
-
-🎨 Frontend (React + Tailwind + AG Grid)
-
-Modern UI with dark + blue translucent theme
-
-Editable grid with API integration
-
-Sorting, filtering, pagination on UI
-
-Responsive layout
-
-⚡ Deployment Ready
-
-Fully deployable backend + frontend + DB stack
-
-Works on any cloud (Render, Railway, Vercel, Netlify, etc.)
-
-🛠️ Tech Stack
-
-Frontend:
-
-React (Vite)
-
-TailwindCSS + ShadCN UI
-
-AG Grid (custom dark/blue theme)
-
-React Router
-
-Backend:
-
-Node.js + Express
-
-JWT Auth (httpOnly cookies)
-
-Bcrypt (password hashing)
-
-Helmet + Rate Limiting (security)
-
-Database:
-
-PostgreSQL / MySQL / MongoDB (choose your DB)
-
-📡 API Endpoints
-Auth
-
-POST /api/auth/register → Register user
-
-POST /api/auth/login → Login & set JWT cookie
-
-POST /api/auth/logout → Clear cookie
-
-GET /api/auth/current-user → Get logged-in user
-
-Leads
-
-GET /api/leads → List leads with pagination/filtering
-
-GET /api/leads/:id → Get lead by ID
-
-POST /api/leads → Create lead
-
-PUT /api/leads/:id → Update lead
-
-DELETE /api/leads/:id → Delete lead
-
-GET /api/leads/user/:userId → Leads for specific user
-
-⚙️ Setup & Installation
-
-Clone Repo
-
-git clone https://github.com/your-username/leads-crm.git
-cd leads-crm
-
-
-Backend Setup
-
-cd server
+### Frontend Setup
+```bash
+cd Client
 npm install
 npm run dev
+```
 
+## 🔧 Environment Variables
 
-Create .env in server/ with:
+**Backend (.env)**
+```env
+DATABASE_URL="postgresql://username:password@localhost:5432/leadms"
+JWT_SECRET="your-secret-key"
+PORT=3000
+```
 
-PORT=5000
-DATABASE_URL=your_database_url
-JWT_SECRET=your_secret
+**Frontend (.env)**
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
 
+## 📊 Database Schema
 
-Frontend Setup
+**Users**: id, firstName, lastName, email, password, createdAt  
+**Leads**: id, firstName, lastName, email, phone, company, city, state, source, status, score, leadValue, isQualified, userId, createdAt
 
-cd client
-npm install
-npm run dev
+## 🔌 Key API Endpoints
 
+**Auth**: `/api/users/login`, `/api/users/register`, `/api/users/logout`  
+**Leads**: `GET/POST /api/leads`, `PUT/DELETE /api/leads/:id`
 
-Open http://localhost:5173 🎉
+## 🚀 Deployment
+
+**Backend (Render)**: Connect repo, set env vars, deploy  
+**Frontend (Vercel)**: Connect repo, set VITE_API_BASE_URL, deploy
+
+## 🛠️ Tech Stack
+- **Frontend**: React, Vite, Tailwind CSS, AG Grid
+- **Backend**: Node.js, Express, Prisma, PostgreSQL
+- **Auth**: JWT with secure cookies
+- **Deploy**: Render (Backend), Vercel (Frontend)
+
+---
+
+**Made with ❤️ by LeadMS Team**
