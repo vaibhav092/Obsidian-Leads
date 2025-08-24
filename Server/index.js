@@ -11,24 +11,22 @@ const app = express();
 
 dotenv.config();
 
-const allowedOrigins = [
-    'http://localhost:5173', // Development
-    'https://obsidian-leads.vercel.app', // Vercel preview
-];
-
+// CORS must be the first middleware
 app.use(
     cors({
-        origin: allowedOrigins,
+        origin: true, // Allow all origins temporarily for debugging
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'X-Requested-With'],
     })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('tiny'));
 
 app.use('/api', (req, res, next) => {
+    console.log('API Request:', req.method, req.path, 'Origin:', req.headers.origin);
     res.set({
         'Cache-Control': 'no-cache, no-store, must-revalidate, private',
         'Pragma': 'no-cache',
