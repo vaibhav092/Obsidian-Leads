@@ -64,7 +64,13 @@ function LoginForm() {
 
             let errorMessage = 'Something went wrong. Please try again.';
 
-            if (err.response?.data?.message) {
+            // Check for timeout errors
+            if (err.code === 'ECONNABORTED' || 
+                err.message?.toLowerCase().includes('timeout') ||
+                err.message?.toLowerCase().includes('network error') ||
+                err.message?.toLowerCase().includes('failed to fetch')) {
+                errorMessage = 'Server is starting up. Please try again in 2 minutes.';
+            } else if (err.response?.data?.message) {
                 errorMessage = err.response.data.message;
             } else if (err.message) {
                 errorMessage = err.message;
@@ -121,24 +127,51 @@ function LoginForm() {
                     </div>
 
                     {error && (
-                        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 mb-4">
+                        <div className={`border rounded-lg p-3 mb-4 ${
+                            error.toLowerCase().includes('server is starting up') 
+                                ? 'bg-yellow-500/10 border-yellow-500/20' 
+                                : 'bg-red-500/10 border-red-500/20'
+                        }`}>
                             <div className="flex items-start space-x-2">
                                 <div className="flex-shrink-0">
-                                    <svg
-                                        className="w-4 h-4 text-red-400 mt-0.5"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
+                                    {error.toLowerCase().includes('server is starting up') ? (
+                                        <svg
+                                            className="w-4 h-4 text-yellow-400 mt-0.5"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                    ) : (
+                                        <svg
+                                            className="w-4 h-4 text-red-400 mt-0.5"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                    )}
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-red-400 text-sm font-medium">{error}</p>
-                                    {error.toLowerCase().includes('password') && (
+                                    <p className={`text-sm font-medium ${
+                                        error.toLowerCase().includes('server is starting up') 
+                                            ? 'text-yellow-400' 
+                                            : 'text-red-400'
+                                    }`}>{error}</p>
+                                    {error.toLowerCase().includes('server is starting up') && (
+                                        <p className="text-yellow-300 text-xs mt-1">
+                                            The server is initializing. Please wait a moment and try again.
+                                        </p>
+                                    )}
+                                    {error.toLowerCase().includes('password') && !error.toLowerCase().includes('server is starting up') && (
                                         <p className="text-red-300 text-xs mt-1">
                                             Please check your password and try again.
                                         </p>
