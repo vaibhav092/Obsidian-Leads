@@ -66,6 +66,7 @@ api.interceptors.response.use(
 );
 
 export const apiGet = async (endpoint, config = {}) => {
+    console.log('🔍 Frontend API call:', endpoint, 'Config:', config);
     const response = await api.get(endpoint, config);
     return response.data;
 };
@@ -101,7 +102,7 @@ export const userApi = {
 
 // Lead API
 export const leadApi = {
-    getAll: (params = {}) => apiGet('/api/leads', params),
+    getAll: (params = {}) => apiGet('/api/leads', { params }),
     getById: (id) => apiGet(`/api/leads/${id}`),
     create: (leadData) => apiPost('/api/leads', leadData),
     update: (id, leadData) => apiPut(`/api/leads/${id}`, leadData),

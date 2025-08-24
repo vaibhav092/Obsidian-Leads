@@ -103,6 +103,10 @@ const buildFilterConditions = (filters) => {
 
 export const getAllLeads = async (req, res) => {
     try {
+        console.log('🔍 Query parameters received:', req.query);
+        console.log('📄 Page:', req.query.page);
+        console.log('📊 Limit:', req.query.limit);
+        
         const page = parseInt(req.query.page) || 1;
         const limit = Math.min(parseInt(req.query.limit) || 20, 100);
         const skip = (page - 1) * limit;
@@ -142,14 +146,24 @@ export const getAllLeads = async (req, res) => {
             'Expires': '0'
         });
 
-        res.json({
+        const response = {
             success: true,
             data: leads,
             page,
             limit,
             total,
             totalPages,
+        };
+        
+        console.log('📤 Response sent:', {
+            page: response.page,
+            limit: response.limit,
+            total: response.total,
+            totalPages: response.totalPages,
+            dataLength: response.data.length
         });
+        
+        res.json(response);
     } catch (error) {
         console.error('Error fetching leads:', error);
         res.status(500).json({ success: false, message: 'Failed to fetch leads' });
