@@ -14,19 +14,23 @@ dotenv.config();
 const allowedOrigins = [
     'http://localhost:5173', // Development
     'https://obsidian-leads.vercel.app', // Vercel preview
-    'https://your-actual-production-domain.com', // Your real production domain
 ];
 
 app.use(
     cors({
         origin: function (origin, callback) {
+            console.log('CORS check - Origin:', origin);
             if (!origin || allowedOrigins.includes(origin)) {
+                console.log('✅ CORS allowed for origin:', origin);
                 callback(null, true);
             } else {
+                console.log('❌ CORS blocked for origin:', origin);
                 callback(new Error('Not allowed by CORS'));
             }
         },
         credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
     })
 );
 app.use(express.json());
@@ -36,14 +40,24 @@ app.use(morgan('tiny'));
 app.use('/api/users', userRoutes);
 app.use('/api/leads', leadRoutes);
 
-const PORT = 3000;
+// Debug route to check environment variables
+app.get('/api/debug', (req, res) => {
+    res.json({
+        nodeEnv: process.env.NODE_ENV,
+        cookieDomain: process.env.COOKIE_DOMAIN,
+        corsOrigins: allowedOrigins,
+        timestamp: new Date().toISOString()
+    });
+});
+
+const PORT = process.env.PORT || 3000;
 
 async function startServer() {
     try {
         await prisma.$connect();
         console.log('DB connected successfully');
-        app.listen(PORT, () => {
-            console.log(`Server listening on http://localhost:${PORT}`);
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`Server listening on port ${PORT}`);
         });
     } catch (error) {
         console.error('Failed to connect to the database:', error.message);
