@@ -19,12 +19,9 @@ const allowedOrigins = [
 app.use(
     cors({
         origin: function (origin, callback) {
-            console.log('CORS check - Origin:', origin);
             if (!origin || allowedOrigins.includes(origin)) {
-                console.log('✅ CORS allowed for origin:', origin);
                 callback(null, true);
             } else {
-                console.log('❌ CORS blocked for origin:', origin);
                 callback(new Error('Not allowed by CORS'));
             }
         },
@@ -39,16 +36,6 @@ app.use(morgan('tiny'));
 
 app.use('/api/users', userRoutes);
 app.use('/api/leads', leadRoutes);
-
-// Debug route to check environment variables
-app.get('/api/debug', (req, res) => {
-    res.json({
-        nodeEnv: process.env.NODE_ENV,
-        cookieDomain: process.env.COOKIE_DOMAIN,
-        corsOrigins: allowedOrigins,
-        timestamp: new Date().toISOString()
-    });
-});
 
 const PORT = process.env.PORT || 3000;
 
