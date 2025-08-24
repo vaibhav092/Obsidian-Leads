@@ -1,16 +1,12 @@
 // src/utils/axios.js
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://obsidian-leads.onrender.com';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
     timeout: 10000,
-    headers: { 
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
-    },
+    headers: { 'Content-Type': 'application/json' },
     withCredentials: true,
 });
 

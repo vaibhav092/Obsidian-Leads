@@ -14,7 +14,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'http://localhost:3000', // Express backend (dev)
+                target: 'https://obsidian-leads.onrender.com' ,
                 changeOrigin: true,
                 secure: false,
             },
