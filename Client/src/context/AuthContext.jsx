@@ -29,19 +29,29 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (credentials) => {
-        const response = await userApi.login(credentials);
-        if (response.user) {
-            setUser(response.user);
+        try {
+            const response = await userApi.login(credentials);
+            if (response.user) {
+                setUser(response.user);
+            }
+            return response;
+        } catch (error) {
+            // Re-throw the error so it can be caught by the LoginForm
+            throw error;
         }
-        return response;
     };
 
     const register = async (userData) => {
-        const response = await userApi.register(userData);
-        if (response.user) {
-            setUser(response.user);
+        try {
+            const response = await userApi.register(userData);
+            if (response.user) {
+                setUser(response.user);
+            }
+            return response;
+        } catch (error) {
+            // Re-throw the error so it can be caught by the LoginForm
+            throw error;
         }
-        return response;
     };
 
     const logout = async () => {

@@ -59,11 +59,30 @@ function LoginForm() {
             navigate('/leads');
         } catch (err) {
             console.error('API Error:', err);
-            setError(
-                err.response?.data?.message ||
-                    err.message ||
-                    'Something went wrong. Please try again.'
-            );
+            console.log('Error status:', err.response?.status);
+            console.log('Error data:', err.response?.data);
+            
+            // Extract error message from server response
+            let errorMessage = 'Something went wrong. Please try again.';
+            
+            if (err.response?.data?.message) {
+                errorMessage = err.response.data.message;
+            } else if (err.message) {
+                errorMessage = err.message;
+            }
+            
+            console.log('Final error message:', errorMessage);
+            
+            // Check if it's a password-related error
+            const isPasswordError = errorMessage.toLowerCase().includes('password') || 
+                                   errorMessage.toLowerCase().includes('invalid email or password');
+            
+            setError(errorMessage);
+            
+            // If it's a password error and we're on login, clear the password field
+            if (isPasswordError && isLogin) {
+                setFormData(prev => ({ ...prev, password: '' }));
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -107,7 +126,19 @@ function LoginForm() {
                     {/* Error Display */}
                     {error && (
                         <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 mb-4">
-                            <p className="text-red-400 text-sm">{error}</p>
+                            <div className="flex items-start space-x-2">
+                                <div className="flex-shrink-0">
+                                    <svg className="w-4 h-4 text-red-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-red-400 text-sm font-medium">{error}</p>
+                                    {error.toLowerCase().includes('password') && (
+                                        <p className="text-red-300 text-xs mt-1">Please check your password and try again.</p>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     )}
 
@@ -179,7 +210,11 @@ function LoginForm() {
                                 value={formData.password}
                                 onChange={(e) => handleInputChange('password', e.target.value)}
                                 required
-                                className="mt-2 bg-neutral-800 border-neutral-700 text-white placeholder-neutral-400"
+                                className={`mt-2 bg-neutral-800 border-neutral-700 text-white placeholder-neutral-400 transition-all duration-200 ${
+                                    error && error.toLowerCase().includes('password') 
+                                        ? 'border-red-500/50 shadow-sm shadow-red-500/20' 
+                                        : ''
+                                }`}
                                 disabled={isSubmitting}
                             />
                         </div>

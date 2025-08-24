@@ -27,7 +27,11 @@ api.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        // Don't retry login/register requests on 401 - these should fail immediately
+        const isAuthRequest = originalRequest.url?.includes('/login') || 
+                             originalRequest.url?.includes('/register');
+
+        if (error.response?.status === 401 && !originalRequest._retry && !isAuthRequest) {
             if (isRefreshing) {
                 return new Promise((resolve, reject) => {
                     failedQueue.push({ resolve, reject });
