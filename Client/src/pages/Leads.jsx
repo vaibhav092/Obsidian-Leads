@@ -46,11 +46,11 @@ function Leads() {
         company: { label: 'Company', type: 'text', operators: ['equals', 'contains'] },
         city: { label: 'City', type: 'text', operators: ['equals', 'contains'] },
         status: { label: 'Status', type: 'select', operators: ['equals', 'in'], options: ['new', 'contacted', 'qualified', 'lost', 'won'] },
-        source: { label: 'Source', type: 'select', operators: ['equals', 'in'], options: ['website', 'social_media', 'referral', 'cold_call', 'other'] },
+        source: { label: 'Source', type: 'select', operators: ['equals', 'in'], options: ['website', 'facebook_ads', 'google_ads', 'referral', 'events', 'other'] },
         score: { label: 'Score', type: 'number', operators: ['equals', 'gt', 'lt', 'between'] },
         leadValue: { label: 'Lead Value', type: 'number', operators: ['equals', 'gt', 'lt', 'between'] },
-        createdAt: { label: 'Created Date', type: 'date', operators: ['on', 'before', 'after', 'between'] },
-        lastActivityAt: { label: 'Last Activity', type: 'date', operators: ['on', 'before', 'after', 'between'] },
+        created_at: { label: 'Created Date', type: 'date', operators: ['on', 'before', 'after', 'between'] },
+        last_activity_at: { label: 'Last Activity', type: 'date', operators: ['on', 'before', 'after', 'between'] },
         isQualified: { label: 'Qualified', type: 'boolean', operators: ['equals'], options: [true, false] }
     };
 
