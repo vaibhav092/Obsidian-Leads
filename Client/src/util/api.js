@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
-// Create axios instance
 const api = axios.create({
     baseURL: API_BASE_URL,
     timeout: 10000,
@@ -27,7 +26,6 @@ api.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        // Don't retry login/register requests on 401 - these should fail immediately
         const isAuthRequest =
             originalRequest.url?.includes('/login') || originalRequest.url?.includes('/register');
 
@@ -46,7 +44,7 @@ api.interceptors.response.use(
             try {
                 await api.post('/api/users/refresh');
 
-                processQueue(null); // retry queued requests
+                processQueue(null);
                 return api(originalRequest);
             } catch (refreshError) {
                 processQueue(refreshError, null);
@@ -67,7 +65,6 @@ api.interceptors.response.use(
     }
 );
 
-// Generic helpers
 export const apiGet = async (endpoint, config = {}) => {
     const response = await api.get(endpoint, config);
     return response.data;
@@ -99,14 +96,7 @@ export const userApi = {
     register: (userData) => apiPost('/api/users/register', userData),
     getProfile: () => apiGet('/api/users/me'),
     logout: () => apiGet('/api/users/logout'),
-    isLogin: async () => {
-        try {
-            await apiGet('/api/users/me');
-            return true;
-        } catch (error) {
-            return false;
-        }
-    },
+    isLogin: () => apiGet('/api/users/islogin'),
 };
 
 // Lead API

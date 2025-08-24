@@ -34,7 +34,6 @@ export default function HomePage() {
 
     return (
         <div className="min-h-screen bg-black text-white">
-            {/* Navigation */}
             <nav className="px-6 py-4 border-b border-gray-800">
                 <div className="max-w-6xl mx-auto flex justify-between items-center">
                     <div className="flex items-center space-x-2">
@@ -52,7 +51,6 @@ export default function HomePage() {
                 </div>
             </nav>
 
-            {/* Hero Section */}
             <div className="max-w-6xl mx-auto px-6 py-16">
                 <div className="text-center max-w-3xl mx-auto">
                     <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
@@ -70,7 +68,6 @@ export default function HomePage() {
                 </div>
             </div>
 
-            {/* Features */}
             <div className="max-w-6xl mx-auto px-6 py-16">
                 <h2 className="text-2xl font-bold text-center mb-12 text-white">Features</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -88,8 +85,6 @@ export default function HomePage() {
                     ))}
                 </div>
             </div>
-
-            {/* CTA Section */}
             <div className="max-w-6xl mx-auto px-6 py-16">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold mb-4 text-white">
@@ -108,7 +103,6 @@ export default function HomePage() {
                 </div>
             </div>
 
-            {/* Footer */}
             <footer className="border-t border-gray-800 py-8 mt-16">
                 <div className="max-w-6xl mx-auto px-6 text-center">
                     <div className="flex items-center justify-center space-x-2 mb-2">

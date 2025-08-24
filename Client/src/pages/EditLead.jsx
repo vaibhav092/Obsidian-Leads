@@ -21,14 +21,13 @@ function EditLead() {
     const navigate = useNavigate();
     const { user } = useAuth();
 
-    // Fetch lead data on component mount
     useEffect(() => {
         const fetchLead = async () => {
             try {
                 const response = await leadApi.getById(id);
-                console.log('Lead response:', response); // Debug log
+                console.log('Lead response:', response);
 
-                // Handle the correct response format from the server
+
                 let leadData = {};
                 if (response && response.success && response.lead) {
                     leadData = response.lead;
@@ -91,7 +90,7 @@ function EditLead() {
     return (
         <div className="min-h-screen bg-neutral-900 text-white p-8">
             <div className="max-w-2xl mx-auto">
-                {/* Header */}
+
                 <div className="flex items-center justify-between mb-8">
                     <div>
                         <h1 className="text-3xl font-bold mb-2">Edit Lead</h1>
@@ -105,17 +104,17 @@ function EditLead() {
                     </Link>
                 </div>
 
-                {/* Error Message */}
+
                 {error && (
                     <div className="bg-red-900/50 border border-red-600 rounded-lg p-4 mb-6">
                         <p className="text-red-200">{error}</p>
                     </div>
                 )}
 
-                {/* Form */}
+
                 <div className="bg-neutral-800 rounded-lg p-6">
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Name Fields */}
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label
@@ -156,7 +155,7 @@ function EditLead() {
                             </div>
                         </div>
 
-                        {/* Email */}
+
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium mb-2">
                                 Email Address *
@@ -173,7 +172,7 @@ function EditLead() {
                             />
                         </div>
 
-                        {/* Phone and Company */}
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label htmlFor="phone" className="block text-sm font-medium mb-2">
@@ -206,7 +205,7 @@ function EditLead() {
                             </div>
                         </div>
 
-                        {/* Status and Source */}
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label htmlFor="status" className="block text-sm font-medium mb-2">
@@ -250,7 +249,7 @@ function EditLead() {
                             </div>
                         </div>
 
-                        {/* Notes */}
+
                         <div>
                             <label htmlFor="notes" className="block text-sm font-medium mb-2">
                                 Notes
@@ -266,7 +265,7 @@ function EditLead() {
                             />
                         </div>
 
-                        {/* Form Actions */}
+
                         <div className="flex items-center justify-end space-x-4 pt-6 border-t border-neutral-700">
                             <Link
                                 to="/leads"

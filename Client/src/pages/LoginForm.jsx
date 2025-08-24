@@ -62,7 +62,6 @@ function LoginForm() {
             console.log('Error status:', err.response?.status);
             console.log('Error data:', err.response?.data);
 
-            // Extract error message from server response
             let errorMessage = 'Something went wrong. Please try again.';
 
             if (err.response?.data?.message) {
@@ -73,14 +72,12 @@ function LoginForm() {
 
             console.log('Final error message:', errorMessage);
 
-            // Check if it's a password-related error
             const isPasswordError =
                 errorMessage.toLowerCase().includes('password') ||
                 errorMessage.toLowerCase().includes('invalid email or password');
 
             setError(errorMessage);
 
-            // If it's a password error and we're on login, clear the password field
             if (isPasswordError && isLogin) {
                 setFormData((prev) => ({ ...prev, password: '' }));
             }
@@ -98,7 +95,6 @@ function LoginForm() {
                         <p className="text-neutral-400">Manage your leads efficiently</p>
                     </div>
 
-                    {/* Tabs */}
                     <div className="flex mb-6 bg-neutral-800/50 rounded-xl p-1">
                         <button
                             type="button"
@@ -124,7 +120,6 @@ function LoginForm() {
                         </button>
                     </div>
 
-                    {/* Error Display */}
                     {error && (
                         <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 mb-4">
                             <div className="flex items-start space-x-2">
@@ -153,7 +148,6 @@ function LoginForm() {
                         </div>
                     )}
 
-                    {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {!isLogin && (
                             <div className="grid grid-cols-2 gap-4">

@@ -46,7 +46,7 @@ function CreateLead() {
     return (
         <div className="min-h-screen bg-neutral-900 text-white p-8">
             <div className="max-w-2xl mx-auto">
-                {/* Header */}
+
                 <div className="flex items-center justify-between mb-8">
                     <div>
                         <h1 className="text-3xl font-bold mb-2">Create New Lead</h1>
@@ -60,17 +60,17 @@ function CreateLead() {
                     </Link>
                 </div>
 
-                {/* Error Message */}
+
                 {error && (
                     <div className="bg-red-900/50 border border-red-600 rounded-lg p-4 mb-6">
                         <p className="text-red-200">{error}</p>
                     </div>
                 )}
 
-                {/* Form */}
+
                 <div className="bg-neutral-800 rounded-lg p-6">
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Name Fields */}
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label
@@ -111,7 +111,7 @@ function CreateLead() {
                             </div>
                         </div>
 
-                        {/* Email */}
+
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium mb-2">
                                 Email Address *
@@ -128,7 +128,7 @@ function CreateLead() {
                             />
                         </div>
 
-                        {/* Phone and Company */}
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label htmlFor="phone" className="block text-sm font-medium mb-2">
@@ -161,7 +161,7 @@ function CreateLead() {
                             </div>
                         </div>
 
-                        {/* Status and Source */}
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label htmlFor="status" className="block text-sm font-medium mb-2">
@@ -205,7 +205,7 @@ function CreateLead() {
                             </div>
                         </div>
 
-                        {/* Notes */}
+
                         <div>
                             <label htmlFor="notes" className="block text-sm font-medium mb-2">
                                 Notes
@@ -221,7 +221,7 @@ function CreateLead() {
                             />
                         </div>
 
-                        {/* Form Actions */}
+
                         <div className="flex items-center justify-end space-x-4 pt-6 border-t border-neutral-700">
                             <Link
                                 to="/leads"
