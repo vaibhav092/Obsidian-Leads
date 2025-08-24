@@ -13,6 +13,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -22,6 +23,8 @@ export const AuthProvider = ({ children }) => {
             } catch (error) {
                 console.log('User not authenticated');
                 setUser(null);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -36,7 +39,6 @@ export const AuthProvider = ({ children }) => {
             }
             return response;
         } catch (error) {
-            // Re-throw the error so it can be caught by the LoginForm
             throw error;
         }
     };
@@ -49,7 +51,6 @@ export const AuthProvider = ({ children }) => {
             }
             return response;
         } catch (error) {
-            // Re-throw the error so it can be caught by the LoginForm
             throw error;
         }
     };
@@ -70,6 +71,7 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         isAuthenticated: !!user,
+        loading,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

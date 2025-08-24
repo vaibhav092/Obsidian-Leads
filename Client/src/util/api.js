@@ -28,8 +28,8 @@ api.interceptors.response.use(
         const originalRequest = error.config;
 
         // Don't retry login/register requests on 401 - these should fail immediately
-        const isAuthRequest = originalRequest.url?.includes('/login') || 
-                             originalRequest.url?.includes('/register');
+        const isAuthRequest =
+            originalRequest.url?.includes('/login') || originalRequest.url?.includes('/register');
 
         if (error.response?.status === 401 && !originalRequest._retry && !isAuthRequest) {
             if (isRefreshing) {
@@ -111,7 +111,7 @@ export const userApi = {
 
 // Lead API
 export const leadApi = {
-    getAll: () => apiGet('/api/leads'),
+    getAll: (params = {}) => apiGet('/api/leads', params),
     getById: (id) => apiGet(`/api/leads/${id}`),
     create: (leadData) => apiPost('/api/leads', leadData),
     update: (id, leadData) => apiPut(`/api/leads/${id}`, leadData),

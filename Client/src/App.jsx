@@ -5,6 +5,8 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import LoginForm from './pages/LoginForm';
 import Home from './pages/Home';
 import Leads from './pages/Leads';
+import CreateLead from './pages/CreateLead';
+import EditLead from './pages/EditLead';
 
 function App() {
     return (
@@ -18,6 +20,22 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <Leads />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/leads/create"
+                        element={
+                            <ProtectedRoute>
+                                <CreateLead />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/leads/edit/:id"
+                        element={
+                            <ProtectedRoute>
+                                <EditLead />
                             </ProtectedRoute>
                         }
                     />
